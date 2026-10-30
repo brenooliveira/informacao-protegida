@@ -1,6 +1,8 @@
 # Proposta de schema — aguardando aprovação
 
-Data: 2026-10-30. **Não aplicado. Não é migration.** Nenhuma tabela de negócio será criada até aprovação. Esta proposta reúne tipos, relacionamentos, índices, unicidade, RLS e retenção para orientar a revisão antes da Fase 3.
+Data: 2026-10-30. **Proposta aprovada para continuidade pelo usuário (“Pode seguir”).** Na Fase 2 foi aplicado somente o subconjunto `waitlist`, `consent_records` e `rate_limits`, em `20261030000100_waitlist.sql`. As demais tabelas continuam propostas para as fases seguintes.
+
+No subconjunto atual, `owner_id` de consentimentos deve ser NULL e a finalidade é apenas waitlist; FK de profiles e demais finalidades entram na Fase 3. O snapshot do texto de consentimento também é guardado. Cancelamento apaga os registros e a retenção máxima local é 180 dias, com limpeza diária; revisar encerramento em até 90 dias após abertura do cadastro. Essa implementação incremental evita criar estruturas de conta antes da fase de autenticação.
 
 ## Convenções
 

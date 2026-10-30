@@ -1,24 +1,27 @@
 # Roadmap
 
-## Fase 1
+## Fase 1 — aprovada
 
-Fundação, interface inicial Matrix, ambiente Supabase local, validação de env, gate de segredos, testes e proposta de schema. Aprovar o modelo antes das migrations. Ver evidências em docs/VALIDATION.md.
+Fundação, identidade Matrix, Supabase local, validação de ambiente, testes/CI preparado e schema proposto aprovados pelo usuário para continuidade em 2026-10-30.
 
-## Fases seguintes — aguardando revisão
+## Fase 2 — implementada localmente, em revisão
 
-2. Landing completa, verificador Pwned Passwords (consulta real somente por clique), espera/consentimento, rascunhos jurídicos, SEO/Lighthouse e primeiro deploy Vercel quando autorizado.
-3. OTP, SMTP Resend, migrations/RLS, e-mails verificados, exportação, exclusão e auditoria; testes reais de dois usuários.
-4. HIBP providers, catálogo/traduções, fila/limite global, histórico/resultados e HTML sanitizado.
-5. Motor de recomendações puro e catálogo RASCUNHO, questionário, painel e docs/SCORING.md.
-6. Monitoramento elegível, templates React Email, preferências, resumo e retenção.
-7. Limites FREE/PLUS/FAMILY, convites e consentimento agregado, interfaces BillingProvider/Asaas e SecurityAdvisorProvider sem IA/cobrança, OWASP ASVS e preparação de produção.
+Landing completa, verificador Pwned Passwords real no navegador, espera com consentimento/RLS/rate limit/revogação, limpeza diária, políticas/termos RASCUNHO, SEO/Open Graph e auditoria mobile. Evidências em docs/VALIDATION-PHASE2.md.
 
-## Pendências de documentação/decisões futuras
+Deploy Vercel e execução remota de CI permanecem adiados pela instrução de manter local. Antes de publicação, completar/revisar dados jurídicos e DPO, canal de atendimento e confirmação de titularidade para futuras comunicações. Não foram enviados e-mails ou criadas cobranças.
 
-- docs/HIBP.md com termos atuais, custos, cota, respostas, retries e atribuição.
-- docs/SCORING.md com fórmula educativa por níveis, sem nota falsa de precisão.
-- Estimativa preliminar entregue em docs/COSTS.md para 100, 1.000 e 10.000 usuários; recalcular com métricas e quota efetiva no momento da contratação. Nenhuma compra foi autorizada ou realizada nesta fase.
-- Dados da empresa/DPO nos rascunhos legais e revisão por advogado.
-- IP/retensão de registros de acesso versus minimização: revisar aplicabilidade jurídica e desenho final antes de Fase 3.
-- Contas de menores gerenciadas por responsável fora do MVP; pendência jurídica explícita.
-- GitHub remoto/execução de CI e deploy adiados por instrução expressa do usuário de manter local.
+## Próximas fases — aguardando revisão
+
+3. OTP, SMTP Resend, demais migrations/RLS, e-mails verificados, exportação/exclusão, auditoria e isolamento entre dois usuários reais.
+4. HIBP de contas, providers, catálogo/traduções, fila/limite global, histórico/resultados e sanitização.
+5. Motor puro e catálogo RASCUNHO, questionário/painel e indicador por níveis em docs/SCORING.md.
+6. Monitoramento, React Email, alertas/resumo, opt-in e retenções completas.
+7. FREE/PLUS/FAMILY e limites no servidor, convites/consentimento agregado, interfaces BillingProvider/Asaas e SecurityAdvisorProvider sem cobrança/IA, revisão OWASP ASVS e checklist de produção.
+
+## Pendências transversais
+
+- Recalcular docs/COSTS.md com uso real e tarifas/quota no momento da contratação.
+- Revisar IP e retenção de acesso legalmente exigido antes da Fase 3; logs padrão do provedor não bastam como decisão jurídica.
+- Menores gerenciados por responsável fora do MVP; pendência jurídica.
+- Planejar rotação versionada de HMAC para não invalidar silenciosamente links da espera.
+- Concluir confirmação de endereço antes de campanhas, mesmo que o cadastro autenticado continue em implementação.

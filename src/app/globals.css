@@ -917,3 +917,526 @@ h3 {
     transition: none !important;
   }
 }
+
+/* Fase 2: ferramentas, consentimento e conteúdo público. */
+.password-section {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 55px;
+  padding-block: 72px;
+  border-block: 1px solid var(--border);
+  scroll-margin-top: 25px;
+}
+.checker-intro > p:not(.section-kicker),
+.waitlist-section > div > p:not(.section-kicker) {
+  max-width: 390px;
+  color: #b1bdab;
+  font-size: 14px;
+  line-height: 1.9;
+  margin-top: 22px;
+}
+.checker-intro .text-link {
+  margin-top: 22px;
+  color: var(--green);
+  font-size: 12px;
+}
+.checker-panel,
+.waitlist-panel {
+  background: #0f1811;
+  border: 1px solid #354a2c;
+  padding: 30px;
+}
+.panel-heading {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  font: 9px var(--font-mono);
+  letter-spacing: 1px;
+  color: #b1c7a3;
+  margin-bottom: 29px;
+}
+.panel-label {
+  margin-left: auto;
+  color: #a7b69d;
+  font-size: 8px;
+  letter-spacing: 0.8px;
+}
+.checker-panel label,
+.waitlist-panel form > label {
+  display: block;
+  font-size: 13px;
+  color: #dce5d6;
+  margin-bottom: 10px;
+}
+.checker-panel input,
+.waitlist-panel input[type="email"] {
+  width: 100%;
+  height: 49px;
+  background: #080f0a;
+  border: 1px solid #405437;
+  border-radius: 3px;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: #f2f6ee;
+  outline: none;
+}
+.checker-panel input:focus,
+.waitlist-panel input[type="email"]:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px #a5f65d20;
+}
+input::placeholder {
+  color: #8e9b87;
+}
+input:disabled {
+  opacity: 0.6;
+}
+.field-hint {
+  font-size: 11px;
+  color: #a0af97;
+  line-height: 1.8;
+  margin-top: 10px;
+}
+.field-hint a,
+.source-note a,
+.legal-page a:not(.text-link) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: #c1e5a4;
+}
+.action-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  cursor: pointer;
+}
+.action-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.checker-result:empty {
+  display: none;
+}
+.checker-result:not(:empty) {
+  border-top: 1px solid #35492c;
+  padding-top: 22px;
+  margin-top: 23px;
+}
+.checker-result h3 {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.checker-result p {
+  font-size: 12px;
+  line-height: 1.9;
+  margin-top: 10px;
+  color: #c0cbb9;
+}
+.result-found h3 {
+  color: #ffd2a5;
+}
+.result-clear h3 {
+  color: var(--green);
+}
+.checker-result strong {
+  font-weight: 600;
+  color: #eff6e8;
+}
+.source-note {
+  font-size: 10px;
+  line-height: 1.9;
+  color: #a0af97;
+  margin-top: 22px;
+}
+.form-error {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #ffc4ac;
+  margin-top: 8px;
+}
+.form-error:empty {
+  display: none;
+}
+.privacy-explainer {
+  grid-column: 1/-1;
+  border-top: 1px solid var(--border);
+  padding-top: 23px;
+}
+.privacy-explainer summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: #bfd5b0;
+  padding-block: 10px;
+}
+.privacy-explainer p {
+  font-size: 12px;
+  line-height: 1.9;
+  max-width: 900px;
+  color: #aebfa2;
+  margin-top: 14px;
+}
+.benefit-icon {
+  color: var(--green);
+  font-size: 24px;
+  margin-bottom: 26px;
+}
+.benefits-section {
+  padding-bottom: 65px;
+}
+.plans-section {
+  border-top: 1px solid var(--border);
+}
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 23px;
+}
+.plan-card {
+  padding: 28px 24px;
+  background: #0e1510;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+.plan-highlight {
+  border-color: #729c50;
+  background: linear-gradient(150deg, #172515, #0e1510);
+}
+.plan-label {
+  display: flex;
+  justify-content: space-between;
+  font: 11px var(--font-mono);
+  color: var(--green);
+  letter-spacing: 1.1px;
+  gap: 10px;
+  margin-bottom: 35px;
+}
+.plan-label > span {
+  font-size: 7px;
+  color: #c2d6af;
+  letter-spacing: 0.5px;
+}
+.plan-card h3 {
+  font-size: 22px;
+}
+.plan-emails {
+  font-size: 12px;
+  color: #afbea5;
+  margin-top: 12px;
+}
+.plan-price {
+  font-size: 23px;
+  color: #e1ecd8;
+  margin-top: 23px;
+  letter-spacing: -0.5px;
+}
+.plan-card ul {
+  list-style: none;
+  padding: 23px 0;
+  margin: 24px 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 14px;
+}
+.plan-card li {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: #c2cdbb;
+  line-height: 1.7;
+}
+.plan-card li > span {
+  color: var(--green);
+}
+.plan-link {
+  font-size: 11px;
+  border: 1px solid #425c34;
+  padding: 15px 11px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  color: #d4ebc2;
+}
+.plan-link:hover {
+  background: #203719;
+}
+.waitlist-section {
+  padding: 55px 40px;
+  background:
+    radial-gradient(ellipse at 0% 40%, #a5f65d09, transparent 65%), #101a11;
+  border: 1px solid #3a522e;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  scroll-margin-top: 30px;
+}
+.waitlist-panel {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.waitlist-panel p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #b1c2a6;
+  margin-top: 12px;
+}
+.waitlist-panel h3 {
+  font-size: 23px;
+  color: var(--green);
+}
+.waitlist-panel .text-link {
+  margin-top: 22px;
+}
+.waitlist-panel .consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 12px;
+  line-height: 1.8;
+  margin-top: 18px;
+  color: #c0d0b5;
+  cursor: pointer;
+}
+.consent-label input {
+  width: 21px;
+  height: 21px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: #a5f65d;
+}
+.consent-label input:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+}
+.faq-section {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 16px 60px;
+}
+.faq-section .section-kicker {
+  grid-column: 1;
+}
+.faq-section > h2 {
+  grid-column: 1;
+  align-self: start;
+}
+.faq-list {
+  grid-column: 2;
+  grid-row: 1/3;
+}
+.faq-list details {
+  border-bottom: 1px solid var(--border);
+}
+.faq-list details:first-child {
+  border-top: 1px solid var(--border);
+}
+.faq-list summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  padding-block: 23px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.faq-list summary span {
+  color: var(--green);
+  font-size: 20px;
+  font-weight: 300;
+}
+.faq-list details[open] summary span {
+  transform: rotate(45deg);
+}
+.faq-list details p {
+  color: #afbea7;
+  font-size: 13px;
+  line-height: 1.9;
+  padding-bottom: 25px;
+}
+.footer-links {
+  width: 100%;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-size: 11px;
+  padding-block: 10px;
+  display: block;
+}
+.site-footer .footer-source {
+  flex-basis: 100%;
+  margin: 0;
+  color: #a0af97;
+}
+.legal-page {
+  padding-block: 50px 85px;
+  max-width: 900px;
+}
+.legal-page > .section-kicker {
+  margin-top: 45px;
+}
+.legal-page h1 {
+  font-size: clamp(40px, 6vw, 65px);
+  line-height: 1.1;
+  letter-spacing: -2px;
+  font-weight: 500;
+  margin-top: 35px;
+}
+.legal-draft {
+  color: #ffd8a9;
+  background: #2a2314;
+  border: 1px solid #63502d;
+  padding: 16px 18px;
+  margin-top: 28px;
+  font: 11px/1.8 var(--font-mono);
+}
+.legal-page section {
+  margin-top: 40px;
+}
+.legal-page h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.legal-page section p,
+.unsubscribe-panel p {
+  font-size: 14px;
+  color: #bac7b3;
+  line-height: 1.95;
+  margin-top: 14px;
+}
+.unsubscribe-panel {
+  margin-top: 35px;
+  max-width: 600px;
+}
+@media (max-width: 1050px) {
+  .password-section {
+    gap: 35px;
+  }
+  .checker-panel {
+    padding: 25px;
+  }
+  .plans-grid {
+    gap: 12px;
+  }
+  .plan-card {
+    padding: 23px 18px;
+  }
+  .plan-label {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .waitlist-section {
+    padding: 36px;
+    gap: 35px;
+  }
+}
+@media (max-width: 760px) {
+  .password-section {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-block: 48px;
+  }
+  .checker-panel {
+    padding: 24px 20px;
+  }
+  .checker-intro > p:not(.section-kicker) {
+    font-size: 13px;
+    margin-top: 18px;
+  }
+  .checker-intro .text-link {
+    font-size: 11px;
+  }
+  .panel-heading {
+    font-size: 8px;
+    letter-spacing: 0.7px;
+  }
+  .panel-label {
+    font-size: 7px;
+  }
+  .privacy-explainer {
+    grid-column: 1;
+  }
+  .plans-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .plan-card {
+    padding: 26px;
+  }
+  .plan-label {
+    flex-direction: row;
+    margin-bottom: 28px;
+  }
+  .plan-label > span {
+    font-size: 8px;
+  }
+  .plan-card ul {
+    padding-block: 21px;
+    margin-block: 20px;
+  }
+  .plan-link {
+    padding: 17px;
+    font-size: 12px;
+  }
+  .waitlist-section {
+    grid-template-columns: 1fr;
+    padding: 30px 23px;
+    gap: 28px;
+  }
+  .waitlist-section > div > p:not(.section-kicker) {
+    font-size: 13px;
+    margin-top: 18px;
+  }
+  .faq-section {
+    display: block;
+  }
+  .faq-list {
+    margin-top: 30px;
+  }
+  .faq-list summary {
+    font-size: 13px;
+    padding-block: 22px;
+  }
+  .faq-list details p {
+    font-size: 12px;
+  }
+  .footer-links {
+    display: flex;
+    gap: 12px 20px;
+  }
+  .footer-links a:not(.nav-project) {
+    display: block;
+  }
+  .legal-page {
+    padding-top: 35px;
+  }
+  .legal-page h1 {
+    font-size: 43px;
+    letter-spacing: -1.7px;
+  }
+  .legal-page h2 {
+    font-size: 22px;
+  }
+  .legal-page section p {
+    font-size: 13px;
+  }
+  .legal-draft {
+    font-size: 10px;
+  }
+  .development-note {
+    font-size: 8px;
+    letter-spacing: 0;
+    line-height: 1.8;
+  }
+  .hero-actions {
+    gap: 20px;
+  }
+}

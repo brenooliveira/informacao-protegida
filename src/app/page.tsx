@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { PasswordChecker } from "@/components/password-checker";
+import { WaitlistForm } from "@/components/waitlist-form";
+import { Benefits, Plans, FAQ } from "@/components/landing-sections";
 import { SecurityVisual } from "@/components/security-visual";
 const steps = [
   {
@@ -50,21 +53,23 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <Button
-              render={<Link href="#como-funciona" />}
+              render={<Link href="#verificador" />}
               nativeButton={false}
               role="link"
               size="lg"
               className="main-button"
             >
-              Conheça como funciona <span aria-hidden="true">↗</span>
+              Verificar uma senha <span aria-hidden="true">↗</span>
             </Button>
-            <Link href="/projeto" className="text-link">
-              Ver o projeto <span aria-hidden="true">→</span>
+            <Link href="#como-funciona" className="text-link">
+              Como funciona <span aria-hidden="true">→</span>
             </Link>
           </div>
           <div className="development-note">
             <span className="small-cross">+</span>
-            <span>Em desenvolvimento · Prévia local da Fase 1</span>
+            <span>
+              Fase 2 · Prévia local · Sem cadastro para verificar senhas
+            </span>
           </div>
         </div>
         <SecurityVisual />
@@ -122,6 +127,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <PasswordChecker />
+      <Benefits />
       <section
         id="principios"
         className="shell privacy-section"
@@ -149,14 +156,18 @@ export default function Home() {
           </Link>
         </div>
       </section>
+      <Plans />
+      <WaitlistForm />
+      <FAQ />
       <section className="shell phase-notice">
         <span className="notice-mark" aria-hidden="true">
           [ i ]
         </span>
         <p>
-          <strong>Estamos construindo a fundação.</strong> Cadastro, consultas e
-          monitoramento serão implementados nas próximas fases. Esta prévia não
-          coleta informações nem realiza verificações.
+          <strong>Um passo de cada vez.</strong> O verificador de senhas e a
+          lista de espera já estão disponíveis nesta versão local. Cadastro,
+          consultas de e-mail e monitoramento serão implementados nas próximas
+          fases.
         </p>
         <Link href="/projeto">
           Acompanhar etapas <span aria-hidden="true">→</span>

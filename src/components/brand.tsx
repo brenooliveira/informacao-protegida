@@ -20,10 +20,10 @@ export function ShieldIcon({ className = "" }: { className?: string }) {
 }
 export function Brand() {
   return (
-    <Link href="/" className="brand" aria-label="Informação Protegida — início">
+    <Link href="/" className="brand">
       <ShieldIcon />
       <span>
-        informação
+        informação{" "}
         <span className="brand-second">
           protegida<span className="brand-dot">.</span>
         </span>

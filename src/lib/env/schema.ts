@@ -7,11 +7,16 @@ const optionalSecret = z.preprocess(
 export const serverEnvSchema = publicEnvSchema
   .extend({
     APP_ENV: z.enum(["local", "test", "production"]),
+    SITE_INDEXABLE: z
+      .enum(["true", "false"])
+      .default("false")
+      .transform((value) => value === "true"),
     BREACH_PROVIDER: z.enum(["mock", "hibp"]),
     SUPABASE_SERVICE_ROLE_KEY: optionalSecret,
     HIBP_API_KEY: optionalSecret,
     RESEND_API_KEY: optionalSecret,
     CRON_SECRET: optionalSecret,
+    WAITLIST_HMAC_SECRET: optionalSecret,
     HIBP_RPM: z.coerce.number().int().positive().max(10000).default(10),
     HIBP_TIMEOUT_MS: z.coerce.number().int().positive().default(10000),
     HIBP_MIN_CHECK_INTERVAL_HOURS: z.coerce.number().int().min(24).default(24),
@@ -29,6 +34,7 @@ export const serverEnvSchema = publicEnvSchema
         "HIBP_API_KEY",
         "RESEND_API_KEY",
         "CRON_SECRET",
+        "WAITLIST_HMAC_SECRET",
       ] as const) {
         if (!env[key])
           ctx.addIssue({

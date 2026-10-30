@@ -16,9 +16,14 @@ test("início acessível, honesto e responsivo", async ({ page }, testInfo) => {
     /Seus dados estão.*seguros na.*internet/,
   );
   await expect(
-    page.getByText("Em desenvolvimento · Prévia local da Fase 1"),
+    page.getByText(
+      "Fase 2 · Prévia local · Sem cadastro para verificar senhas",
+    ),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Conheça como funciona" }).click();
+  await page
+    .getByRole("main")
+    .getByRole("link", { name: "Como funciona", exact: true })
+    .click();
   await expect(page).toHaveURL(/#como-funciona$/);
   await expect(
     page.getByRole("heading", { name: "Conheça sua exposição" }),
@@ -52,5 +57,5 @@ test("navegação até as fases e retorno", async ({ page }) => {
 test("health sem segredos ou falsa conexão com banco", async ({ request }) => {
   const response = await request.get("/api/health");
   expect(response.status()).toBe(200);
-  expect(await response.json()).toEqual({ status: "ok", phase: 1 });
+  expect(await response.json()).toEqual({ status: "ok", phase: 2 });
 });

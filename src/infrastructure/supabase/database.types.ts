@@ -9,13 +9,144 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never;
+      consent_records: {
+        Row: {
+          consent_text: string;
+          created_at: string;
+          granted_at: string;
+          id: string;
+          ip_truncated: unknown;
+          owner_id: string | null;
+          purpose: string;
+          revoked_at: string | null;
+          text_version: string;
+          waitlist_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          consent_text: string;
+          created_at?: string;
+          granted_at?: string;
+          id?: string;
+          ip_truncated: unknown;
+          owner_id?: string | null;
+          purpose: string;
+          revoked_at?: string | null;
+          text_version: string;
+          waitlist_id: string;
+        };
+        Update: {
+          consent_text?: string;
+          created_at?: string;
+          granted_at?: string;
+          id?: string;
+          ip_truncated?: unknown;
+          owner_id?: string | null;
+          purpose?: string;
+          revoked_at?: string | null;
+          text_version?: string;
+          waitlist_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "consent_records_waitlist_id_fkey";
+            columns: ["waitlist_id"];
+            isOneToOne: false;
+            referencedRelation: "waitlist";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      rate_limits: {
+        Row: {
+          created_at: string;
+          expires_at: string;
+          request_count: number;
+          scope: string;
+          subject_digest: string;
+          updated_at: string;
+          window_start: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          expires_at: string;
+          request_count: number;
+          scope: string;
+          subject_digest: string;
+          updated_at?: string;
+          window_start: string;
+        };
+        Update: {
+          created_at?: string;
+          expires_at?: string;
+          request_count?: number;
+          scope?: string;
+          subject_digest?: string;
+          updated_at?: string;
+          window_start?: string;
+        };
+        Relationships: [];
+      };
+      waitlist: {
+        Row: {
+          created_at: string;
+          id: string;
+          normalized_email: string;
+          status: string;
+          unsubscribe_token_digest: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          normalized_email: string;
+          status?: string;
+          unsubscribe_token_digest: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          normalized_email?: string;
+          status?: string;
+          unsubscribe_token_digest?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      cleanup_waitlist: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
+      consume_waitlist_limit: {
+        Args: {
+          p_limit: number;
+          p_scope: string;
+          p_seconds: number;
+          p_subject: string;
+        };
+        Returns: boolean;
+      };
+      join_waitlist: {
+        Args: {
+          p_email: string;
+          p_ip_truncated: unknown;
+          p_subject_digest: string;
+          p_token_digest: string;
+        };
+        Returns: string;
+      };
+      leave_waitlist: {
+        Args: { p_subject_digest: string; p_token_digest: string };
+        Returns: string;
+      };
     };
     Enums: {
       [_ in never]: never;

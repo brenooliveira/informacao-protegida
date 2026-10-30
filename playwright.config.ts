@@ -1,4 +1,10 @@
+import { randomBytes } from "node:crypto";
 import { defineConfig, devices } from "@playwright/test";
+try {
+  process.loadEnvFile(".env.local");
+} catch (error) {
+  if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+}
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
@@ -13,7 +19,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm start --port 3100",
+    command: "pnpm start --port 3100 --hostname 127.0.0.1",
+    env: { WAITLIST_HMAC_SECRET: randomBytes(32).toString("hex") },
     url: "http://localhost:3100",
     reuseExistingServer: false,
     timeout: 60000,

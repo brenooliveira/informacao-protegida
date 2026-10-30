@@ -1,48 +1,47 @@
-# Arquitetura — Fase 1
+# Arquitetura — estado da Fase 2
 
-Data: 2026-10-30. Estado: fundação implementada; modelo de produto **proposto, aguardando aprovação**.
+2026-10-30. Fundação aprovada; landing/ferramentas implementadas localmente. Stack única Next.js 16.4.3/React 19.3, TypeScript strict, Tailwind 4, shadcn/Base UI, pnpm e Node 24.13.x. Sem monorepo, Prisma, Redis ou infraestrutura de produção extra.
 
-## Uma aplicação
+## Fronteiras
 
-Next.js 16.4.3 estável, React 19.3, TypeScript strict, Tailwind 4 e shadcn/ui com primitivas Base UI (padrão atual do gerador). Um pacote pnpm, sem monorepo. Node 24.13.x permite usar Vitest 5 e mantém runtime único no desenvolvimento e CI.
+- Browser → Pwned Passwords diretamente: Web Crypto, prefixo de cinco hex e comparação local. Sem endpoint do produto recebendo senha/hash/prefixo.
+- Browser → Next.js /api/waitlist: RHF/Zod e consentimento explícito; servidor valida origem, JSON/tamanho e dados. Adaptador server-only executa RPCs privadas no Supabase.
+- Next.js → Supabase: service role apenas no adaptador específico de espera, sem valores de owner/status fornecidos pelo visitante. Autenticação futura usará JWT/cookies e RLS por usuário, não um cliente admin genérico.
+- Domain/application continuam reservados para regras/casos de uso das fases futuras. ESLint bloqueia I/O/frameworks no domínio. Não criar lógica fictícia de postura/proteção.
 
-Browser → Next.js (SSR/ações/handlers) → Supabase via supabase-js. Ações de usuário usarão JWT/cookies e RLS. Jobs terão adaptador separado com service role e checagem de escopo; esse cliente privilegiado não foi criado nesta fase para evitar uso acidental.
+## Banco
 
-`domain/` conterá dados/funções puras. `application/` terá casos de uso; `infrastructure/` implementará portas e I/O. ESLint impede importações de Next.js, React, Supabase e infraestrutura no domínio. RHF + resolver Zod estão instalados para os formulários das próximas fases.
+Modelo geral aprovado para continuidade. Só waitlist, consent_records e rate_limits foram migradas; grants de anon/authenticated/PUBLIC revogados e RLS deny-all explícito. join_waitlist grava lista/consentimento atomicamente; contadores usam upsert condicional e advisory lock por sujeito. leave_waitlist elimina por digest de token; cleanup_waitlist roda diariamente via pg_cron.
 
-## Separação de confiança
+Tipos TypeScript são gerados do banco real via CLI e formatados automaticamente; CI compara a geração com o arquivo versionado. Testes pgTAP verificam catálogo/grants, gravação/duplicatas, token, consentimento, limites, retenção e cron. Testes reais de isolamento entre contas serão acrescentados na Fase 3, quando essas tabelas existirem.
 
-Schema público de env separado fisicamente do schema do servidor. Arquivos de servidor importam `server-only`; o build bloqueia importação acidental em componente cliente. O detector adicional inspeciona todo `.next/static`, inclusive chunks e sourcemaps presentes. Não promete identificar todo segredo possível: cobre os quatro tipos previstos e padrões Supabase.
+## Confiança e privacidade
 
-CSP usa nonce por resposta e renderização dinâmica; scripts do Next recebem o nonce. `unsafe-eval` apenas em desenvolvimento. CSS permite `unsafe-inline` para compatibilidade com a UI, risco documentado; scripts não permitem inline arbitrário. Sem analytics, imagens remotas, fontes Google ou scripts externos. O host de `connect-src` é derivado da configuração pública do Supabase. Pwned Passwords será liberado somente na Fase 2.
+Schemas de env públicos/servidor separados fisicamente. server-only evita importação acidental no browser; scanner adicional inspeciona todos os arquivos .next/static. Não imprimir segredos, tokens, e-mails, senha/hash/prefixo em logs. Helpers capturam o status Supabase sem expor valores.
 
-`src/proxy.ts` segue o nome atual do Next.js 16; a função de renovação de sessão será adicionada na Fase 3. Não há rota autenticada nem falsa garantia de autenticação nesta entrega.
+CSP usa nonce e SSR dinâmico para scripts próprios. Sem scripts/fontes de terceiros; connect-src permite própria origem, Supabase configurado e Pwned Passwords. unsafe-eval apenas no desenvolvimento e style-src unsafe-inline documentado para compatibilidade. Proxy segue o nome atual do Next.js 16 e receberá refresh Auth na Fase 3.
 
-## Banco e integração futura
+O IP confiável vem do cabeçalho sobrescrito pela Vercel em produção; no localhost os headers do cliente são ignorados. Apenas HMAC vai à tabela de limites, e IP truncado ao consentimento. Token de cancelamento tem 32 bytes aleatórios, digest HMAC no banco e fragmento # no link. Duplicatas não rotacionam o token original.
 
-[SCHEMA.md](SCHEMA.md) é a proposta, não uma migration. Tipos gerados representam o banco vazio real. Fila `check_jobs`, limites e agendamento Postgres evitam Redis/filas adicionais. Operações críticas usarão transações/RPC com locks e restrições do banco, e não verificações somente no browser.
+## SEO, publicação e operação
 
-HIBP, Resend, BillingProvider e SecurityAdvisorProvider serão implementados nas fases correspondentes, após leitura da documentação oficial atual. Sem API simulada apresentada como real. A tela inicial é uma prévia de identidade e estrutura; não é a landing completa da Fase 2.
+Metadados, canonical, PNG Open Graph, sitemap e robots. SITE_INDEXABLE é opt-in, permitindo medir SEO da configuração pública em localhost sem publicar. Padrão de desenvolvimento e rascunhos permanecem noindex. Pages jurídicas têm campos de controlador/DPO em aberto para revisão.
+
+Supabase local usa Docker apenas no desenvolvimento/CI e bind de rede em loopback; Studio é opcional. Testes SQL usam psql por stdin para evitar o bloqueio de bind mounts observado no macOS. Nenhum serviço remoto ou pago foi criado. Vercel/CI remoto adiados pela instrução de manter local.
 
 ## Riscos e alternativas
 
-- Next.js tem complexidade de cache e fronteiras RSC. CSP dinâmica elimina cache compartilhado nesta fase; rever custo/performance com medição na Fase 2.
-- RLS exige teste de políticas e de concessões de privilégios; checagem do catálogo não substitui dois usuários reais. Testes na Fase 3.
-- Postgres centraliza custo/concorrência e exige índices, locks curtos e idempotência. Alternativa Redis/BullMQ adicionaria operação e foi descartada conforme escopo.
-- SMTP é dependência para login; testes locais usarão caixa SMTP local, produção precisa domínio e Resend configurados.
-- Plano FAMILY compartilha somente agregados consentidos; detalhe nunca via policy de leitura por titular. Requer RPC limitada e teste específico.
-- Aprovação de schema é uma fronteira explícita do projeto; migrations não serão inventadas para aparentar uma fase concluída.
+SSR por nonce custa mais que página inteiramente estática; desempenho medido em mobile. O motor JS gerencia limpeza física de memória, portanto não prometer apagamento seguro de strings. Serviço externo pode falhar; erro nunca é resultado negativo.
+
+Controle de acesso requer grants e políticas, não apenas RLS ligado. Service role fica restrita ao adaptador e às operações definidas. HMAC protege índices/tokens, mas rotacioná-lo exige versionamento para não invalidar links. A inscrição de espera ainda não comprova titularidade e não deve receber campanha antes da confirmação. Retenção/DPO/transferências internacionais exigem revisão antes da publicação.
 
 ## Referências oficiais consultadas
 
-- https://nextjs.org/docs/app/getting-started/installation
+- https://nextjs.org/docs/app/getting-started/installation e documentação local versionada em node_modules/next/dist/docs
 - https://nextjs.org/docs/app/guides/content-security-policy
-- https://nextjs.org/docs/app/getting-started/proxy
-- https://supabase.com/docs/guides/local-development
-- https://supabase.com/docs/guides/auth/server-side/creating-a-client
 - https://supabase.com/docs/guides/database/postgres/row-level-security
+- https://supabase.com/docs/guides/cron
+- https://haveibeenpwned.com/API/v3 e https://haveibeenpwned.com/TermsOfUse
+- https://vercel.com/docs/headers/request-headers
 - https://ui.shadcn.com/docs/installation/next
-- https://vitest.dev/guide/
 - https://mswjs.io/docs/migrations/2.x-to-3.x
-
-Versões confirmadas também no registro npm em 2026-10-30; detalhes exatos no pnpm-lock.yaml.

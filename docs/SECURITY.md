@@ -1,21 +1,22 @@
-# Segurança — fundação
+# Segurança — estado da Fase 2
 
-## Ameaças e controles presentes
+| Ameaça                       | Controle implementado                                                                  | Limite                                                                      |
+| ---------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Senha divulgada              | Web Crypto no browser; request externo com prefixo 5; sem rota de senha; só por clique | Provedor recebe prefixo/IP da conexão; JS não garante limpeza física de RAM |
+| Resultado limpo falso        | Parser estrito, contagem zero descartada; HTTP/falhas geram erro                       | Base externa não cobre todo comprometimento                                 |
+| Segredo no cliente           | server-only, schemas separados, scanner no build, testes de sentinelas                 | Scanner cobre padrões/variáveis previstas, não todos os segredos possíveis  |
+| XSS/clickjacking             | CSP por nonce, scripts próprios, nosniff, frame-ancestors none, DENY                   | style-src unsafe-inline permanece por compatibilidade UI                    |
+| Lista exposta                | RLS/policy deny-all, grants revogados, RPCs só service_role                            | Fase 3 ainda precisa isolamento real entre contas                           |
+| Consentimento ausente        | RHF/Zod no browser, Zod no servidor e transação SQL                                    | Inscrição não prova titularidade; confirmar antes de qualquer campanha      |
+| Abuso/concorrência           | Limites Postgres atômicos por HMAC de IP, horário e diário                             | Endpoints públicos ainda dependem da proteção de rede/host em produção      |
+| Spoofing IP                  | Só header sobrescrito pela Vercel em produção; localhost ignora headers do visitante   | Trocar de host exige configurar outra fronteira de confiança                |
+| CSRF/payload                 | Origin estrita, JSON e stream limitado a 4 KiB                                         | Não substitui controles de autenticação futura                              |
+| Token de revogação exposto   | 32 bytes aleatórios, HMAC no banco, fragmento #, POST explícito                        | Quem possui o link pode cancelar; pessoa deve guardar link original         |
+| Enumeração/sequestro de link | Mensagem genérica e token original preservado em duplicatas                            | Contato/DPO ainda precisa ser definido antes de publicação                  |
+| Retenção indefinida          | Limpeza pg_cron diária e cascata no cancelamento                                       | Operação precisa monitorar cron e revisar prazo quando cadastro abrir       |
 
-| Ameaça                            | Controle implementado                                                           | Limite atual                                                                |
-| --------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Segredo no bundle                 | server-only, env separado, scanner no build/CI + testes de vazamento            | Não cobre segredos arbitrários fora dos padrões previstos                   |
-| XSS/clickjacking                  | CSP nonce, object-src none, frame-ancestors none, X-Frame-Options DENY, nosniff | Sanitização HIBP será implementada na Fase 4                                |
-| Configuração inválida             | Zod no carregamento de next.config e no módulo server                           | APP_ENV precisa ser production no deploy real                               |
-| Exposição do banco local          | Rede Docker com bind loopback                                                   | Conferir configuração em cada máquina; não usar stack local em produção     |
-| Acesso cruzado                    | Gate de catálogo exige RLS e policy explícita em todas as tabelas public        | Não existem tabelas de produto; isolamento funcional ainda não implementado |
-| Vazamento por logs de ferramentas | Helpers de env/tipos capturam stdout contendo chaves; erros sem valores         | Não imprimir supabase status JSON em logs públicos                          |
-| Risco de supply chain             | Lockfile, pacote CLI fixado, instalação frozen no CI                            | Auditoria de dependências e atualização contínua ainda necessárias          |
+HSTS fica ativo apenas em APP_ENV=production, sem atrapalhar localhost. CSP connect-src permite somente origem própria, Supabase configurado e api.pwnedpasswords.com; websocket adicional só no desenvolvimento. Credenciais HIBP/Resend não são usadas pelo verificador.
 
-Não existe envio, armazenamento ou coleta de senha/e-mail na prévia. Não há autenticação, worker ou integração HIBP ativo.
+Não há cliente admin genérico acessível ao browser. O módulo de espera server-only usa service role sem receber owner/status da pessoa e chama funções específicas. Os grants de funções auxiliares também foram removidos de anon/authenticated/PUBLIC.
 
-## Pendências por fase
-
-Fase 2: Pwned Passwords com prefixo somente, headers finais, consentimento de espera e testes de rede. Fase 3: cookies/refresh, OTP com HMAC de código, RLS funcional, limites, auditoria, exportação e exclusão. Fase 4: timeout/retry, quota global atômica, sanitização e XSS. Fase 7: revisão OWASP ASVS nível 1 aplicável, configuração de produção e dependências.
-
-Não há afirmação de conformidade LGPD ou proteção garantida nesta entrega. HSTS fica ativo apenas com APP_ENV=production para não interferir em localhost.
+Pendências: OTP/cookies/RLS por conta, exportação/exclusão e logs legais na Fase 3; integração de contas HIBP e sanitização na Fase 4; revisão OWASP ASVS aplicável na Fase 7. Nenhum deploy, compra ou envio de e-mail foi feito nesta fase local.

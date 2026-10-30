@@ -31,6 +31,7 @@ describe("configuração de ambiente", () => {
         HIBP_API_KEY: "b".repeat(32),
         RESEND_API_KEY: "c".repeat(32),
         CRON_SECRET: "d".repeat(32),
+        WAITLIST_HMAC_SECRET: "e".repeat(32),
       }),
     ).toThrow("BREACH_PROVIDER");
   });
@@ -42,6 +43,15 @@ describe("configuração de ambiente", () => {
   it.each([0, -1, 2.5, "abc"])("recusa RPM inválido: %s", (rpm) => {
     expect(() => parseServerEnv({ ...local, HIBP_RPM: rpm })).toThrow(
       "HIBP_RPM",
+    );
+  });
+  it("indexação é opt-in e só aceita booleano textual", () => {
+    expect(parseServerEnv(local).SITE_INDEXABLE).toBe(false);
+    expect(
+      parseServerEnv({ ...local, SITE_INDEXABLE: "true" }).SITE_INDEXABLE,
+    ).toBe(true);
+    expect(() => parseServerEnv({ ...local, SITE_INDEXABLE: "yes" })).toThrow(
+      "SITE_INDEXABLE",
     );
   });
   it("recusa cache menor que 24h", () => {
@@ -68,6 +78,7 @@ describe("configuração de ambiente", () => {
         HIBP_API_KEY: "b".repeat(32),
         RESEND_API_KEY: "c".repeat(32),
         CRON_SECRET: "d".repeat(32),
+        WAITLIST_HMAC_SECRET: "e".repeat(32),
       }).APP_ENV,
     ).toBe("production");
   });

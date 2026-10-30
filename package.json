@@ -1,6 +1,6 @@
 {
   "name": "informacao-protegida",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
@@ -20,7 +20,8 @@
     "db:types": "node scripts/generate-types.mjs",
     "db:test": "node scripts/test-local-db.mjs",
     "db:check": "node scripts/check-local-db.mjs",
-    "db:test:cli": "supabase test db --network-id informacao-protegida-local"
+    "db:test:cli": "supabase test db --network-id informacao-protegida-local",
+    "db:migrate": "supabase migration up --local"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

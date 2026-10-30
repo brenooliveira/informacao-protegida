@@ -9,7 +9,7 @@ export function proxy(request: NextRequest) {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
-    `connect-src 'self' ${supabaseOrigin}${dev ? " ws://localhost:*" : ""}`,
+    `connect-src 'self' https://api.pwnedpasswords.com ${supabaseOrigin}${dev ? " ws://localhost:*" : ""}`,
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

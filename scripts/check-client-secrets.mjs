@@ -6,6 +6,7 @@ export const secretNames = [
   "HIBP_API_KEY",
   "RESEND_API_KEY",
   "CRON_SECRET",
+  "WAITLIST_HMAC_SECRET",
 ];
 export function findClientLeaks(content, env) {
   const findings = [];

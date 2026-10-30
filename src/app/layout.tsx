@@ -1,3 +1,4 @@
+import { serverEnv } from "@/lib/env/server";
 import { connection } from "next/server";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
@@ -10,7 +11,21 @@ export const metadata: Metadata = {
   },
   description:
     "Conheça o projeto Informação Protegida: orientação prática em português para entender riscos digitais e cuidar das suas informações.",
-  robots: { index: false, follow: false },
+  metadataBase: new URL(serverEnv.NEXT_PUBLIC_APP_URL),
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: "Informação Protegida",
+    title: "Seus dados estão seguros na internet?",
+    description:
+      "Descubra riscos digitais e receba orientações práticas em português.",
+  },
+  twitter: { card: "summary_large_image" },
+  robots: {
+    index: serverEnv.SITE_INDEXABLE,
+    follow: serverEnv.SITE_INDEXABLE,
+  },
 };
 export default async function RootLayout({
   children,

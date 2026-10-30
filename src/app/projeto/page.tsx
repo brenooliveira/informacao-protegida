@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-export const metadata: Metadata = { title: "O projeto" };
+export const metadata: Metadata = {
+  title: "O projeto",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/projeto" },
+};
 const phases = [
   "Fundação técnica e proposta de banco",
   "Landing, verificador de senhas e lista de espera",
@@ -25,8 +29,8 @@ export default function ProjectPage() {
         com <span className="green">uma boa base.</span>
       </h1>
       <p className="project-lead">
-        Prévia local da Fase 1. As funções do produto serão liberadas por
-        etapas, depois da revisão de cada entrega.
+        Fase 1 aprovada. Fase 2 em revisão local. As funções do produto serão
+        liberadas por etapas, depois da revisão de cada entrega.
       </p>
       <section aria-labelledby="phases-title">
         <h2 id="phases-title">Etapas do projeto</h2>
@@ -35,10 +39,8 @@ export default function ProjectPage() {
             <li key={phase}>
               <span className="phase-id">0{i + 1}</span>
               <span>{phase}</span>
-              <span
-                className={i === 0 ? "phase-status active" : "phase-status"}
-              >
-                {i === 0 ? "Em revisão" : "Planejada"}
+              <span className={i <= 1 ? "phase-status active" : "phase-status"}>
+                {i === 0 ? "Aprovada" : i === 1 ? "Em revisão" : "Planejada"}
               </span>
             </li>
           ))}
@@ -57,8 +59,9 @@ export default function ProjectPage() {
           <article>
             <h3>Isolamento no banco</h3>
             <p>
-              Supabase com políticas por usuário. O modelo proposto aguarda
-              aprovação antes das migrations.
+              O schema foi aprovado para continuidade. A lista de espera usa
+              tabelas privadas com RLS; os dados de contas serão implementados
+              na Fase 3.
             </p>
           </article>
           <article>
