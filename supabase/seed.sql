@@ -1,0 +1,2 @@
+-- Fase 1: propositalmente sem tabelas ou registros de produto.
+-- Aprovar docs/SCHEMA.md antes de criar migrations.
