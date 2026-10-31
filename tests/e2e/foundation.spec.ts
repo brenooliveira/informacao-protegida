@@ -17,7 +17,7 @@ test("início acessível, honesto e responsivo", async ({ page }, testInfo) => {
   );
   await expect(
     page.getByText(
-      "Fase 2 · Prévia local · Sem cadastro para verificar senhas",
+      "Versão em desenvolvimento · Sem cadastro para verificar senhas",
     ),
   ).toBeVisible();
   await page
