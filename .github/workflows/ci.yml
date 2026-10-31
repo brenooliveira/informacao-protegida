@@ -58,7 +58,7 @@ jobs:
     timeout-minutes: 15
     env:
       APP_ENV: production
-      NEXT_PUBLIC_APP_URL: https://informacao-protegida.breno26.workers.dev
+      NEXT_PUBLIC_APP_URL: https://informacaoprotegida.com.br
       WAITLIST_ENABLED: "false"
       BREACH_PROVIDER: disabled
       DEPLOYMENT_PLATFORM: cloudflare

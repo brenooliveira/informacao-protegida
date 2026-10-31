@@ -5,7 +5,7 @@ import { chromium } from "@playwright/test";
 const origin = "http://127.0.0.1:8788";
 const variables = {
   APP_ENV: "production",
-  NEXT_PUBLIC_APP_URL: "https://informacao-protegida.breno26.workers.dev",
+  NEXT_PUBLIC_APP_URL: "https://informacaoprotegida.com.br",
   WAITLIST_ENABLED: "false",
   BREACH_PROVIDER: "disabled",
   DEPLOYMENT_PLATFORM: "cloudflare",

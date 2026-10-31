@@ -1,6 +1,6 @@
 # Cloudflare Workers
 
-Worker: `informacao-protegida` · URL: https://informacao-protegida.breno26.workers.dev
+Worker: `informacao-protegida` · URL principal: https://informacaoprotegida.com.br
 
 ## Diagnóstico
 
@@ -47,3 +47,9 @@ Build OpenNext, dry-run, 76 testes unitários, lint, tipagem e smoke test worker
 Na URL pública, Chromium confirmou HTTP 200, hidratação sem erros, nonce/CSP, consulta real ao Pwned Passwords (HTTP 200), cadastro técnico na lista, revogação e layout mobile sem overflow. A inscrição técnica foi cancelada; o banco confirmou ausência do registro. A migration remota `20261030000100_waitlist.sql` foi aplicada; RLS ativo e SELECT revogado para anon/authenticated nas três tabelas; job `waitlist-retention` ativo às 03:17 UTC.
 
 Alterações apenas em `*.md`/`docs/**` não disparam novo deploy no trigger conectado. Mudanças de código continuam publicando automaticamente a branch main.
+
+## Domínio principal — 31/10/2026
+
+A delegação no Registro.br já estava correta (`houston.ns.cloudflare.com` e `nataly.ns.cloudflare.com`) e a zona ativa, mas só existiam registros de e-mail: nenhum destino web, rota ou Custom Domain estava ligado ao Worker. O certificado Universal SSL já estava ativo.
+
+Foram associados por Custom Domains o apex `informacaoprotegida.com.br` e `www.informacaoprotegida.com.br`, preservando MX/TXT. As associações também estão em `wrangler.jsonc` para persistir nos próximos deploys. `NEXT_PUBLIC_APP_URL` no build e runtime passa a ser `https://informacaoprotegida.com.br`; é necessário reconstruir o Next.js para atualizar origem permitida, canonical e sitemap. `www` e o endereço anterior workers.dev redirecionam páginas para o domínio principal preservando caminho/query.

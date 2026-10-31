@@ -5,6 +5,11 @@
   "compatibility_date": "2026-10-30",
   "compatibility_flags": ["nodejs_compat"],
   "keep_vars": true,
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "informacaoprotegida.com.br", "custom_domain": true },
+    { "pattern": "www.informacaoprotegida.com.br", "custom_domain": true },
+  ],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "services": [
     { "binding": "WORKER_SELF_REFERENCE", "service": "informacao-protegida" },
