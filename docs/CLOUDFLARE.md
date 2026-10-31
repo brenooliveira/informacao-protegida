@@ -42,4 +42,8 @@ O pipeline GitHub tem um job Workers independente sem credenciais de produção.
 
 ## Estado de validação
 
-Build OpenNext, dry-run, 76 testes unitários, lint, tipagem e smoke test workerd/Chromium aprovados localmente. Resultado remoto e URL serão confirmados após a publicação.
+Build OpenNext, dry-run, 76 testes unitários, lint, tipagem e smoke test workerd/Chromium aprovados localmente. Deploy remoto concluído com sucesso pelo Workers Builds `91e43ca0-07a9-43da-9e8e-49e96f4ef16a`, do commit `463eef688ae2f02e83dbb9397935f9d7a9df2ebe`. Versão `dd81f244-1fa3-44ea-a821-3977a01dcf7d` atende 100% do tráfego.
+
+Na URL pública, Chromium confirmou HTTP 200, hidratação sem erros, nonce/CSP, consulta real ao Pwned Passwords (HTTP 200), cadastro técnico na lista, revogação e layout mobile sem overflow. A inscrição técnica foi cancelada; o banco confirmou ausência do registro. A migration remota `20261030000100_waitlist.sql` foi aplicada; RLS ativo e SELECT revogado para anon/authenticated nas três tabelas; job `waitlist-retention` ativo às 03:17 UTC.
+
+Alterações apenas em `*.md`/`docs/**` não disparam novo deploy no trigger conectado. Mudanças de código continuam publicando automaticamente a branch main.

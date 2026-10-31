@@ -46,3 +46,7 @@ O preço HIBP é condicional à quota contratada atender à fila. Sob a **hipót
 Não incluídos: domínio, câmbio/IOF, impostos, honorários jurídicos, suporte humano, mais projetos/assentos, compute extra, armazenamento/egress excedentes e eventual infraestrutura adicional que dependa de aprovação. Logs legais precisam de retenção própria; o prazo de logs padrão do provedor não substitui esse requisito.
 
 Recalcular antes de produção com taxa de login, número efetivo de e-mails, dias de novidades, pico da fila, crescimento do banco e limites reais da assinatura. Nenhuma aprovação de gasto está implícita nesta estimativa.
+
+## Mudança de hospedagem
+
+A estimativa acima usa a premissa original de Vercel. O deploy autorizado posteriormente usa Cloudflare Workers; essa parcela da estimativa não representa o custo do ambiente atual e deverá ser recalculada com o plano e consumo efetivos. Não houve alteração de plano durante a correção do deploy.

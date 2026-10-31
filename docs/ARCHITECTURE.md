@@ -21,13 +21,13 @@ Schemas de env públicos/servidor separados fisicamente. server-only evita impor
 
 CSP usa nonce e SSR dinâmico para scripts próprios. Sem scripts/fontes de terceiros; connect-src permite própria origem, Supabase configurado e Pwned Passwords. unsafe-eval apenas no desenvolvimento e style-src unsafe-inline documentado para compatibilidade. Proxy segue o nome atual do Next.js 16 e receberá refresh Auth na Fase 3.
 
-O IP confiável vem do cabeçalho sobrescrito pela Vercel em produção; no localhost os headers do cliente são ignorados. Apenas HMAC vai à tabela de limites, e IP truncado ao consentimento. Token de cancelamento tem 32 bytes aleatórios, digest HMAC no banco e fragmento # no link. Duplicatas não rotacionam o token original.
+O IP confiável vem do cabeçalho sobrescrito pela plataforma configurada: CF-Connecting-IP na Cloudflare ou x-vercel-forwarded-for na Vercel. No localhost os headers do cliente são ignorados. Apenas HMAC vai à tabela de limites, e IP truncado ao consentimento. Token de cancelamento tem 32 bytes aleatórios, digest HMAC no banco e fragmento # no link. Duplicatas não rotacionam o token original.
 
 ## SEO, publicação e operação
 
 Metadados, canonical, PNG Open Graph, sitemap e robots. SITE_INDEXABLE é opt-in, permitindo medir SEO da configuração pública em localhost sem publicar. Padrão de desenvolvimento e rascunhos permanecem noindex. Pages jurídicas têm campos de controlador/DPO em aberto para revisão.
 
-Supabase local usa Docker apenas no desenvolvimento/CI e bind de rede em loopback; Studio é opcional. Testes SQL usam psql por stdin para evitar o bloqueio de bind mounts observado no macOS. Nenhum serviço remoto ou pago foi criado. Vercel/CI remoto adiados pela instrução de manter local.
+Supabase local usa Docker apenas no desenvolvimento/CI e bind de rede em loopback; Studio é opcional. Testes SQL usam psql por stdin para evitar o bloqueio de bind mounts observado no macOS. O deploy posteriormente autorizado usa o Worker Cloudflare existente e o projeto Supabase hospedado informado pelo proprietário. Next.js é empacotado com OpenNext; SSR dinâmico preserva nonce/CSP. O CI inclui validação no runtime workerd. Não há R2/D1/filas neste deploy.
 
 ## Riscos e alternativas
 

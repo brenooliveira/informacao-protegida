@@ -66,3 +66,7 @@ Para Lighthouse, gerar o build com SITE_INDEXABLE=true e iniciar o servidor com 
 - A lista não confirma titularidade nem envia mensagens nesta fase; confirmar endereços antes de campanhas e definir canal para perda do link.
 - Login, resultados de e-mail, usuários distintos e isolamento por conta não foram implementados nem declarados aprovados. Próxima entrega é a Fase 3, após revisão desta fase.
 - JavaScript não garante zerar fisicamente strings da memória; aplicação limpa campo/referências e não persiste nem transmite o valor completo.
+
+## Atualização posterior — publicação autorizada
+
+O registro acima documenta o aceite local original. O proprietário depois autorizou GitHub e correção/publicação no Worker Cloudflare existente. Consulte [CLOUDFLARE.md](CLOUDFLARE.md) para a configuração atual, o deploy concluído e os testes na URL pública. A versão hospedada mantém a lista ativa no Supabase remoto informado pelo proprietário.
