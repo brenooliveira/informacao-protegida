@@ -42,7 +42,7 @@ O pipeline GitHub tem um job Workers independente sem credenciais de produção.
 
 ## Estado de validação
 
-Build OpenNext, dry-run, 76 testes unitários, lint, tipagem e smoke test workerd/Chromium aprovados localmente. Deploy remoto concluído com sucesso pelo Workers Builds `91e43ca0-07a9-43da-9e8e-49e96f4ef16a`, do commit `463eef688ae2f02e83dbb9397935f9d7a9df2ebe`. Versão `dd81f244-1fa3-44ea-a821-3977a01dcf7d` atende 100% do tráfego.
+Build OpenNext, dry-run, 76 testes unitários, lint, tipagem e smoke test workerd/Chromium aprovados localmente. Deploy remoto concluído com sucesso pelo Workers Builds `91e43ca0-07a9-43da-9e8e-49e96f4ef16a`, do commit `463eef688ae2f02e83dbb9397935f9d7a9df2ebe`. A versão inicial `dd81f244-1fa3-44ea-a821-3977a01dcf7d` foi validada com 100% do tráfego nessa publicação.
 
 Na URL pública, Chromium confirmou HTTP 200, hidratação sem erros, nonce/CSP, consulta real ao Pwned Passwords (HTTP 200), cadastro técnico na lista, revogação e layout mobile sem overflow. A inscrição técnica foi cancelada; o banco confirmou ausência do registro. A migration remota `20261030000100_waitlist.sql` foi aplicada; RLS ativo e SELECT revogado para anon/authenticated nas três tabelas; job `waitlist-retention` ativo às 03:17 UTC.
 
@@ -53,3 +53,7 @@ Alterações apenas em `*.md`/`docs/**` não disparam novo deploy no trigger con
 A delegação no Registro.br já estava correta (`houston.ns.cloudflare.com` e `nataly.ns.cloudflare.com`) e a zona ativa, mas só existiam registros de e-mail: nenhum destino web, rota ou Custom Domain estava ligado ao Worker. O certificado Universal SSL já estava ativo.
 
 Foram associados por Custom Domains o apex `informacaoprotegida.com.br` e `www.informacaoprotegida.com.br`, preservando MX/TXT. As associações também estão em `wrangler.jsonc` para persistir nos próximos deploys. `NEXT_PUBLIC_APP_URL` no build e runtime passa a ser `https://informacaoprotegida.com.br`; é necessário reconstruir o Next.js para atualizar origem permitida, canonical e sitemap. `www` e o endereço anterior workers.dev redirecionam páginas para o domínio principal preservando caminho/query.
+
+O build `469eb813-6c2e-435b-8b36-f10aca2db295` publicou com sucesso o commit `04525bf59193bab50d3e6d5be8e71fe80dac21a0` (versão `d7cb1893-83f3-453a-a583-54412c99cce1`). Foram aprovados 81 testes locais, lint, tipagem, build OpenNext e dry-run. No domínio principal, Chromium confirmou canonical, hidratação, consulta real ao Pwned Passwords, inscrição/cancelamento e mobile. `www` e workers.dev redirecionam para o domínio principal; caminho, query e fragmento de cancelamento são preservados. HTTP redireciona para HTTPS pela configuração da zona.
+
+Durante a correção, os DNS públicos 1.1.1.1/8.8.8.8 já retornavam os endereços novos, mas o resolvedor da rede local ainda retornava cache negativo anterior (NODATA para apex e NXDOMAIN para www). Testes HTTPS/Chromium usaram a resolução pública explicitamente, sem alterar DNS do computador ou ignorar validação TLS. Esse cache expira no resolvedor; não requer nova alteração no Registro.br.
