@@ -21,11 +21,18 @@
     "db:test": "node scripts/test-local-db.mjs",
     "db:check": "node scripts/check-local-db.mjs",
     "db:test:cli": "supabase test db --network-id informacao-protegida-local",
-    "db:migrate": "supabase migration up --local"
+    "db:migrate": "supabase migration up --local",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare preview",
+    "cf:deploy": "opennextjs-cloudflare deploy -- --keep-vars",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "cf:dry-run": "wrangler deploy --dry-run",
+    "cf:check": "node scripts/check-worker.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
     "@hookform/resolvers": "^6.0.2",
+    "@opennextjs/cloudflare": "1.20.15",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
     "class-variance-authority": "^0.7.1",
@@ -53,7 +60,8 @@
     "supabase": "2.122.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "wrangler": "4.156.0"
   },
   "packageManager": "pnpm@10.30.1",
   "engines": {

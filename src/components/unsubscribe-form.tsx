@@ -1,4 +1,5 @@
 "use client";
+import { waitlistMessageSchema } from "@/lib/validation/waitlist";
 import { useSyncExternalStore, useState } from "react";
 function currentToken() {
   const value = window.location.hash.slice(1);
@@ -28,8 +29,9 @@ export function UnsubscribeForm() {
         cache: "no-store",
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error);
-      setMessage(result.message);
+      if (!response.ok) throw new Error("Falha ao cancelar.");
+      const message = waitlistMessageSchema.parse(result);
+      setMessage(message.message);
       setDone(true);
       window.history.replaceState(null, "", window.location.pathname);
     } catch {

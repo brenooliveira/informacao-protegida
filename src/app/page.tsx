@@ -5,6 +5,7 @@ import { PasswordChecker } from "@/components/password-checker";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Benefits, Plans, FAQ } from "@/components/landing-sections";
 import { SecurityVisual } from "@/components/security-visual";
+import { serverEnv } from "@/lib/env/server";
 const steps = [
   {
     n: "01",
@@ -68,7 +69,7 @@ export default function Home() {
           <div className="development-note">
             <span className="small-cross">+</span>
             <span>
-              Fase 2 · Prévia local · Sem cadastro para verificar senhas
+              Versão em desenvolvimento · Sem cadastro para verificar senhas
             </span>
           </div>
         </div>
@@ -157,17 +158,20 @@ export default function Home() {
         </div>
       </section>
       <Plans />
-      <WaitlistForm />
+      <WaitlistForm enabled={serverEnv.WAITLIST_ENABLED} />
       <FAQ />
       <section className="shell phase-notice">
         <span className="notice-mark" aria-hidden="true">
           [ i ]
         </span>
         <p>
-          <strong>Um passo de cada vez.</strong> O verificador de senhas e a
-          lista de espera já estão disponíveis nesta versão local. Cadastro,
-          consultas de e-mail e monitoramento serão implementados nas próximas
-          fases.
+          <strong>Um passo de cada vez.</strong> O verificador de senhas já está
+          disponível.{" "}
+          {serverEnv.WAITLIST_ENABLED
+            ? "A lista de espera está aberta. "
+            : "As inscrições serão abertas em breve. "}{" "}
+          Cadastro, consultas de e-mail e monitoramento serão implementados nas
+          próximas fases.
         </p>
         <Link href="/projeto">
           Acompanhar etapas <span aria-hidden="true">→</span>

@@ -27,12 +27,20 @@ export function truncateIp(input: string): string {
       .join(":") + "::/48"
   );
 }
-export function trustedClientIp(headers: Headers, production: boolean): string {
+export function trustedClientIp(
+  headers: Headers,
+  production: boolean,
+  platform: "vercel" | "cloudflare" = "vercel",
+): string {
   // Em localhost não confiar em headers controláveis pelo visitante.
   if (!production) return "127.0.0.1";
-  if (process.env.VERCEL !== "1")
+  if (platform === "vercel" && process.env.VERCEL !== "1")
     throw new Error("Proxy de produção não configurado.");
-  const value = headers.get("x-vercel-forwarded-for")?.trim();
+  const value = headers
+    .get(
+      platform === "cloudflare" ? "cf-connecting-ip" : "x-vercel-forwarded-for",
+    )
+    ?.trim();
   if (!value || !isIP(value)) throw new Error("IP de origem indisponível.");
   return value;
 }

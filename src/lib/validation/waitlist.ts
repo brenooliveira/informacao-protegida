@@ -14,3 +14,10 @@ export const waitlistSchema = z
 export const unsubscribeSchema = z
   .object({ token: z.string().regex(/^[A-Za-z0-9_-]{43}$/) })
   .strict();
+
+export const waitlistReceiptSchema = z.object({
+  message: z.string(),
+  token: z.string().regex(/^[A-Za-z0-9_-]{43}$/),
+});
+export const waitlistMessageSchema = z.object({ message: z.string() });
+export const waitlistErrorSchema = z.object({ error: z.string() });

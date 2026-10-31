@@ -1,0 +1,2 @@
+# Copiar para .dev.vars somente se necessário. Nunca versionar segredos.
+NEXTJS_ENV=development

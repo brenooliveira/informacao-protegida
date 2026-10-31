@@ -105,3 +105,40 @@ describe("minimização de IP", () => {
     ).toThrow();
   });
 });
+
+describe("proxy de produção Cloudflare", () => {
+  it("usa o header definido pela plataforma e ignora headers de outros proxies", () => {
+    expect(
+      trustedClientIp(
+        new Headers({
+          "cf-connecting-ip": "203.0.113.8",
+          "x-forwarded-for": "1.1.1.1",
+          "x-vercel-forwarded-for": "8.8.8.8",
+        }),
+        true,
+        "cloudflare",
+      ),
+    ).toBe("203.0.113.8");
+  });
+  it.each([undefined, "garbage", "8.8.8.8,1.1.1.1"])(
+    "recusa header ausente ou inválido: %s",
+    (ip) => {
+      expect(() =>
+        trustedClientIp(
+          new Headers(ip ? { "cf-connecting-ip": ip } : {}),
+          true,
+          "cloudflare",
+        ),
+      ).toThrow();
+    },
+  );
+  it("continua ignorando headers em execução local", () => {
+    expect(
+      trustedClientIp(
+        new Headers({ "cf-connecting-ip": "8.8.8.8" }),
+        false,
+        "cloudflare",
+      ),
+    ).toBe("127.0.0.1");
+  });
+});

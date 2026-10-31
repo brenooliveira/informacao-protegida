@@ -6,3 +6,7 @@ test-results
 supabase/.temp
 supabase/.branches
 SPEC.md
+
+.open-next
+.wrangler
+cloudflare-env.d.ts

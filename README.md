@@ -6,7 +6,7 @@ Cadastro/OTP, e-mails monitorados, consultas de e-mail, recomendações pessoais
 
 ## Executar
 
-Node 24.13.x (`nvm use`), pnpm 10.30.1 e Docker Desktop ativo. Docker somente no desenvolvimento/CI; produção prevista em Supabase/Vercel.
+Node 24.13.x (`nvm use`), pnpm 10.30.1 e Docker Desktop ativo. Docker somente no desenvolvimento/CI; publicação em Cloudflare Workers (OpenNext) e Supabase hospedado.
 
 ```sh
 nvm use
@@ -47,7 +47,7 @@ tests/                    Vitest/MSW + Playwright
 docs/                     decisões, privacidade, operação e evidências
 ```
 
-Apenas o subconjunto necessário ao consentimento foi migrado nesta fase. Modelo de contas e demais tabelas segue para Fase 3. Service role está isolada em módulo server-only e executa funções específicas de espera sem receber owner/status do visitante. O servidor recusa origens externas e payloads acima de 4 KiB. Limites atômicos Postgres: cinco pedidos/hora e dez/dia por IP; cancelamento limitado a vinte/hora. IP em limites vira HMAC; consentimento retém só IPv4 /24 ou IPv6 /48. Em produção, extração de IP exige proxy Vercel; local ignora headers forjados.
+Apenas o subconjunto necessário ao consentimento foi migrado nesta fase. Modelo de contas e demais tabelas segue para Fase 3. Service role está isolada em módulo server-only e executa funções específicas de espera sem receber owner/status do visitante. O servidor recusa origens externas e payloads acima de 4 KiB. Limites atômicos Postgres: cinco pedidos/hora e dez/dia por IP; cancelamento limitado a vinte/hora. IP em limites vira HMAC; consentimento retém só IPv4 /24 ou IPv6 /48. Em produção, a extração de IP usa o header confiável da plataforma configurada (Cloudflare ou Vercel); local ignora headers forjados.
 
 ## Verificar
 
@@ -81,6 +81,6 @@ Essa flag controla indexação, não cria hospedagem ou publicação. No desenvo
 
 [Decisões](docs/DECISIONS.md), [schema](docs/SCHEMA.md), [privacidade](docs/PRIVACY.md), [segurança](docs/SECURITY.md), [Pwned Passwords](docs/HIBP.md), [operação](docs/OPERATIONS.md), [custos preliminares](docs/COSTS.md), [roadmap](ROADMAP.md) e [prompt original](SPEC.md).
 
-Conforme instrução de manter local, nenhum repositório remoto, execução remota de CI ou deploy Vercel foi realizado. Deploy é um critério original da Fase 2 explicitamente adiado por essa escolha. As instruções de publicação estão em docs/OPERATIONS.md para quando houver autorização e contas/configuração disponíveis.
+O código está no GitHub e o CI da Fase 2 passou. A publicação em Cloudflare Workers foi autorizada posteriormente pelo proprietário. Configuração, diagnóstico e validação estão em [docs/CLOUDFLARE.md](docs/CLOUDFLARE.md).
 
 Para encerrar: pare `pnpm dev` e execute `pnpm db:stop`; os dados locais são preservados.

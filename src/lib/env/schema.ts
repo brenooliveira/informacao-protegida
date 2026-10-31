@@ -11,7 +11,12 @@ export const serverEnvSchema = publicEnvSchema
       .enum(["true", "false"])
       .default("false")
       .transform((value) => value === "true"),
-    BREACH_PROVIDER: z.enum(["mock", "hibp"]),
+    BREACH_PROVIDER: z.enum(["mock", "hibp", "disabled"]),
+    DEPLOYMENT_PLATFORM: z.enum(["vercel", "cloudflare"]).default("vercel"),
+    WAITLIST_ENABLED: z
+      .enum(["true", "false"])
+      .default("true")
+      .transform((value) => value === "true"),
     SUPABASE_SERVICE_ROLE_KEY: optionalSecret,
     HIBP_API_KEY: optionalSecret,
     RESEND_API_KEY: optionalSecret,
@@ -29,37 +34,54 @@ export const serverEnvSchema = publicEnvSchema
           path: ["BREACH_PROVIDER"],
           message: "Mock proibido em produção",
         });
+      if (!env.NEXT_PUBLIC_APP_URL.startsWith("https://"))
+        ctx.addIssue({
+          code: "custom",
+          path: ["NEXT_PUBLIC_APP_URL"],
+          message: "HTTPS obrigatório em produção",
+        });
+      if (env.WAITLIST_ENABLED) {
+        for (const key of [
+          "SUPABASE_SERVICE_ROLE_KEY",
+          "WAITLIST_HMAC_SECRET",
+        ] as const) {
+          if (!env[key])
+            ctx.addIssue({
+              code: "custom",
+              path: [key],
+              message: "Lista de espera exige segredo em produção",
+            });
+        }
+        if (!env.NEXT_PUBLIC_SUPABASE_URL?.startsWith("https://"))
+          ctx.addIssue({
+            code: "custom",
+            path: ["NEXT_PUBLIC_SUPABASE_URL"],
+            message: "HTTPS obrigatório em produção",
+          });
+        if (
+          !/^sb_publishable_/.test(
+            env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
+          )
+        )
+          ctx.addIssue({
+            code: "custom",
+            path: ["NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"],
+            message: "Use a chave pública publicável do Supabase",
+          });
+      }
+    }
+    if (env.WAITLIST_ENABLED) {
       for (const key of [
-        "SUPABASE_SERVICE_ROLE_KEY",
-        "HIBP_API_KEY",
-        "RESEND_API_KEY",
-        "CRON_SECRET",
-        "WAITLIST_HMAC_SECRET",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
       ] as const) {
         if (!env[key])
           ctx.addIssue({
             code: "custom",
             path: [key],
-            message: "Obrigatório em produção",
+            message: "Lista de espera exige Supabase",
           });
       }
-      for (const key of [
-        "NEXT_PUBLIC_APP_URL",
-        "NEXT_PUBLIC_SUPABASE_URL",
-      ] as const) {
-        if (!env[key].startsWith("https://"))
-          ctx.addIssue({
-            code: "custom",
-            path: [key],
-            message: "HTTPS obrigatório em produção",
-          });
-      }
-      if (!/^sb_publishable_/.test(env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY))
-        ctx.addIssue({
-          code: "custom",
-          path: ["NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"],
-          message: "Use a chave pública publicável do Supabase",
-        });
     }
     if (env.BREACH_PROVIDER === "hibp" && !env.HIBP_API_KEY)
       ctx.addIssue({

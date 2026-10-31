@@ -83,3 +83,48 @@ describe("configuração de ambiente", () => {
     ).toBe("production");
   });
 });
+
+describe("publicação por recurso habilitado", () => {
+  const siteOnly = {
+    APP_ENV: "production",
+    NEXT_PUBLIC_APP_URL: "https://informacao-protegida.breno26.workers.dev",
+    BREACH_PROVIDER: "disabled",
+    DEPLOYMENT_PLATFORM: "cloudflare",
+    WAITLIST_ENABLED: "false",
+  };
+  it("permite publicar o verificador sem credenciais de recursos desativados", () => {
+    const env = parseServerEnv(siteOnly);
+    expect(env.WAITLIST_ENABLED).toBe(false);
+    expect(env.NEXT_PUBLIC_SUPABASE_URL).toBeUndefined();
+    expect(env.SITE_INDEXABLE).toBe(false);
+  });
+  it("não ativa a lista implicitamente sem banco e segredos reais", () => {
+    expect(() =>
+      parseServerEnv({ ...siteOnly, WAITLIST_ENABLED: "true" }),
+    ).toThrow("SUPABASE");
+    expect(() =>
+      parseServerEnv({ ...siteOnly, WAITLIST_ENABLED: undefined }),
+    ).toThrow("SUPABASE");
+  });
+  it("exige somente os segredos do recurso implementado", () => {
+    expect(
+      parseServerEnv({
+        ...siteOnly,
+        WAITLIST_ENABLED: "true",
+        NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
+          "sb_publishable_example_for_tests",
+        SUPABASE_SERVICE_ROLE_KEY: "a".repeat(32),
+        WAITLIST_HMAC_SECRET: "b".repeat(32),
+      }).WAITLIST_ENABLED,
+    ).toBe(true);
+  });
+  it("recusa configuração insegura em produção e opções inválidas", () => {
+    for (const input of [
+      { ...siteOnly, NEXT_PUBLIC_APP_URL: "http://localhost:3000" },
+      { ...siteOnly, DEPLOYMENT_PLATFORM: "untrusted" },
+      { ...siteOnly, WAITLIST_ENABLED: "yes" },
+    ])
+      expect(() => parseServerEnv(input)).toThrow();
+  });
+});

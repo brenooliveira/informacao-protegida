@@ -52,3 +52,26 @@ jobs:
           retention-days: 7
       - run: pnpm db:stop
         if: always()
+
+  workers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_ENV: production
+      NEXT_PUBLIC_APP_URL: https://informacao-protegida.breno26.workers.dev
+      WAITLIST_ENABLED: "false"
+      BREACH_PROVIDER: disabled
+      DEPLOYMENT_PLATFORM: cloudflare
+      SITE_INDEXABLE: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm cf:build
+      - run: pnpm cf:dry-run
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm cf:check

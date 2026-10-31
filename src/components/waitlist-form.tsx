@@ -6,9 +6,11 @@ import { z } from "zod";
 import Link from "next/link";
 import {
   waitlistSchema,
+  waitlistReceiptSchema,
+  waitlistErrorSchema,
   WAITLIST_CONSENT_TEXT,
 } from "@/lib/validation/waitlist";
-export function WaitlistForm() {
+export function WaitlistForm({ enabled = true }: { enabled?: boolean }) {
   const [error, setError] = useState("");
   const [receipt, setReceipt] = useState<{
     token: string;
@@ -34,9 +36,18 @@ export function WaitlistForm() {
         cache: "no-store",
       });
       const result = await response.json();
-      if (!response.ok)
-        throw new Error(result.error || "Não foi possível registrar agora.");
-      setReceipt(result);
+      if (!response.ok) {
+        const failure = waitlistErrorSchema.safeParse(result);
+        throw new Error(
+          failure.success
+            ? failure.data.error
+            : "Não foi possível registrar agora.",
+        );
+      }
+      const receipt = waitlistReceiptSchema.safeParse(result);
+      if (!receipt.success)
+        throw new Error("Não foi possível confirmar a inscrição agora.");
+      setReceipt(receipt.data);
       reset();
     } catch (e) {
       setError(
@@ -63,7 +74,15 @@ export function WaitlistForm() {
         </p>
       </div>
       <div className="waitlist-panel">
-        {receipt ? (
+        {!enabled ? (
+          <div role="status">
+            <h3>Inscrições em breve.</h3>
+            <p>
+              A lista de espera ainda não está disponível. Não coletamos e-mails
+              nesta versão.
+            </p>
+          </div>
+        ) : receipt ? (
           <div role="status">
             <h3>Pedido recebido.</h3>
             <p>{receipt.message}</p>

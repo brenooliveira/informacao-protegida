@@ -9,6 +9,11 @@ import {
 } from "@/infrastructure/supabase/waitlist";
 const headers = { "Cache-Control": "no-store" };
 export async function POST(request: Request) {
+  if (!serverEnv.WAITLIST_ENABLED)
+    return Response.json(
+      { error: "Inscrições indisponíveis nesta versão." },
+      { status: 503, headers },
+    );
   if (
     !hasAllowedOrigin(
       request,
@@ -33,6 +38,7 @@ export async function POST(request: Request) {
     const ip = trustedClientIp(
       request.headers,
       serverEnv.APP_ENV === "production",
+      serverEnv.DEPLOYMENT_PLATFORM,
     );
     const token = newUnsubscribeToken();
     const { data, error } = await waitlistClient().rpc("join_waitlist", {

@@ -35,3 +35,14 @@ Modelo aprovado para continuidade na Fase 2; implementação incremental detalha
 - Metadados públicos preparados com SITE_INDEXABLE opt-in. A auditoria SEO mede a configuração indexável em localhost; o padrão de desenvolvimento permanece noindex. Rascunhos jurídicos/cancelamento/projeto sempre noindex.
 - Lighthouse executado via pnpm dlx como ferramenta solicitada pelo aceite, sem adicionar dependência de produção.
 - Escopo continua local conforme preferência anterior; Vercel/GitHub remoto adiados. Não substituir a stack por hospedagem Sites.
+
+## Publicação Cloudflare — 30/10/2026
+
+- Solicitação posterior do proprietário autoriza corrigir e publicar o Worker existente `informacao-protegida`, substituindo a preferência anterior de manter o deploy local.
+- Mantido Next.js 16.4.3, com adaptador OpenNext 1.20.15 e Wrangler 4.156.0 versionados. A configuração automática durante deploy não fica como dependência implícita.
+- SSR com nonce continua dinâmico. Não há ISR no produto nem necessidade de R2/D1/filas neste deploy.
+- Variáveis públicas e segredos são configurados no build e no runtime separadamente. `keep_vars` preserva os valores do painel; segredos nunca entram no Git.
+- Validação exige credenciais apenas de recursos habilitados. Consulta futura de e-mails usa `BREACH_PROVIDER=disabled` sem mock; Pwned Passwords continua real e não precisa de chave. HIBP/Resend serão integrados em suas fases próprias.
+- Lista permanece habilitada no deploy escolhido pelo proprietário, com Supabase hospedado informado por ele. `WAITLIST_ENABLED=false` permite uma publicação explícita sem coleta caso necessário; o CI testa essa variante sem credenciais externas.
+- O proxy Cloudflare usa somente `CF-Connecting-IP` para limites. A execução local ignora headers de proxy.
+- OpenNext sinaliza suporte experimental ao proxy Node do Next. O CI executa o artefato em workerd e valida CSP, nonce por resposta, SSR e hidratação para cobrir essa integração.

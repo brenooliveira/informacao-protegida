@@ -15,7 +15,7 @@ Se os pulls de imagens falharem, conferir daemon, DNS, acesso a public.ecr.aws e
 
 Studio não inicia por padrão: seu bind mount da pasta snippets, assim como pg_prove, bloqueou no ambiente macOS desta entrega. `pnpm db:test` usa stdin no psql já presente no container Postgres, sem novos pacotes/serviços ou mudanças de permissões do computador. A alternativa CLI fica em `pnpm db:test:cli`. Para habilitar Studio depois de resolver os mounts, ajustar o exclude em scripts/start-local-db.mjs e reiniciar somente este projeto.
 
-O workflow remoto está preparado mas não foi executado por escolha de manter local. CI usa sentinelas fictícias; não requer HIBP, Resend, Supabase remoto ou cartão. Quando autorizado, criar/conectar repositório e confirmar execução real.
+O workflow remoto foi executado com sucesso no GitHub após autorização. CI usa sentinelas fictícias; não requer HIBP, Resend, Supabase remoto ou cartão. O workflow também valida o pacote Workers em workerd com Chromium.
 
 Runbooks de catálogo, worker, reprocessamento, retry-after, limpeza, alertas e rotação de chave HIBP serão documentados quando as integrações existirem. Não há jobs de produção a operar na Fase 1.
 
@@ -29,7 +29,7 @@ Verificador é browser → Pwned Passwords; se indisponível, a UI informa erro 
 
 HMAC protege identificadores de IP e tokens. Rotacionar WAITLIST_HMAC_SECRET invalida links de cancelamento existentes; planejar uma transição com versões antes de rotacionar em produção. O ambiente atual é local, sem campanha nem usuários de produção. Não rotacionar silenciosamente: db:env preserva um segredo já existente.
 
-## Publicação futura na Vercel (adiada)
+## Referência anterior de publicação na Vercel (substituída)
 
 1. Obter autorização de publicação/GitHub, configurar projeto Supabase remoto e Vercel do proprietário.
 2. Revisar/controlador/DPO/termos, fornecedores/regiões, confirmação de titularidade da lista e canal para perda de link.
@@ -38,4 +38,4 @@ HMAC protege identificadores de IP e tokens. Rotacionar WAITLIST_HMAC_SECRET inv
 5. Habilitar SITE_INDEXABLE=true somente para a landing aprovada; manter rotas privadas/rascunhos noindex. Conferir headers em HTTPS e relatórios mobile na URL final.
 6. Executar CI remoto e deploy Vercel, validar resultado real; não declarar esse aceite concluído com base no build local.
 
-Não houve publicação nem criação de contas/serviços pagos. A escolha anterior de manter tudo local continua em vigor.
+O usuário autorizou posteriormente a publicação no Worker existente. Seguir [CLOUDFLARE.md](CLOUDFLARE.md); não executar este roteiro Vercel para o deploy atual.
